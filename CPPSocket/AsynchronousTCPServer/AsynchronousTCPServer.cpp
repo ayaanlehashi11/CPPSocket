@@ -27,10 +27,9 @@ public:
 				( 
 				boost::asio::buffer(m_ReceiveBuffer), 
 				boost::bind( &Session::handle_receive, this, 
-												boost::asio::placeholders::error, 
-												boost::asio::placeholders::bytes_transferred ) 
-				
-			);
+					     boost::asio::placeholders::error, 
+					   boost::asio::placeholders::bytes_transferred ) 
+				);
 							
 	}
 
@@ -46,7 +45,7 @@ private:
 		{
 			if( error == boost::asio::error::eof )
 			{
-				std::cout << "클라이언트와 연결이 끊어졌습니다" << std::endl;
+				std::cout << "Disconnected from client" << std::endl;
 			}
 			else 
 			{
@@ -56,7 +55,7 @@ private:
 		else
 		{
 			const std::string strRecvMessage = m_ReceiveBuffer.data();
-			std::cout << "클라이언트에서 받은 메시지: " << strRecvMessage << ", 받은 크기: " << bytes_transferred << std::endl;
+			std::cout << "Message received from client: " << strRecvMessage << ", size received: " << bytes_transferred << std::endl;
 
 			char szMessage[128] = {0,};
 			sprintf_s( szMessage, 128-1, "Re:%s", strRecvMessage.c_str() );
@@ -101,7 +100,7 @@ public:
 private:
 	void StartAccept()
 	{
-		std::cout << "클라이언트 접속 대기....." << std::endl;
+		std::cout << "waiting for client connection...." << std::endl;
 
 		m_pSession = new Session((boost::asio::io_context&)m_acceptor.get_executor().context());
 		
@@ -117,7 +116,7 @@ private:
 	{
 		if (!error)
 		{	
-			std::cout << "클라이언트 접속 성공" << std::endl;
+			std::cout << "Client connection successful" << std::endl;
 			
 			pSession->PostReceive();
 		}
@@ -137,7 +136,7 @@ int main()
 	io_service.run();
   
 
-	std:: cout << "네트웍 접속 종료" << std::endl;
+	std:: cout << "network connection terminated" << std::endl;
 
 	getchar();
 	return 0;

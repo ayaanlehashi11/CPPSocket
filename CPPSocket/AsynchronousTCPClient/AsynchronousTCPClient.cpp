@@ -96,7 +96,7 @@ private:
 		{
 			if( error == boost::asio::error::eof )
 			{
-				std::cout << "서버와 연결이 끊어졌습니다" << std::endl;
+				std::cout << "disconnected from server" << std::endl;
 			}
 			else 
 			{
@@ -106,7 +106,7 @@ private:
 		else
 		{
 			const std::string strRecvMessage = m_ReceiveBuffer.data();
-			std::cout << "클라이언트에서 받은 메시지: " << strRecvMessage << ", 받은 크기: " << bytes_transferred << std::endl;
+			std::cout << "received message: " << strRecvMessage << ", size received: " << bytes_transferred << std::endl;
 
 			PostWrite(); 
 		}
@@ -114,10 +114,10 @@ private:
 
 	
 
-	boost::asio::io_context& m_io_service;
-    boost::asio::ip::tcp::socket m_Socket;
+	boost::asio::io_context& io_service;
+        boost::asio::ip::tcp::socket socket;
 
-	int m_nSeqNumber;
+	int seqnumber;
 	std::array<char, 128> m_ReceiveBuffer;
 	std::string m_WriteMessage;
 };
@@ -137,7 +137,7 @@ int main()
     io_service.run();
 
 	
-	std:: cout << "네트웍 접속 종료" << std::endl;
+	std:: cout << "receiving..." << std::endl;
 
 	getchar();
 	return 0;
